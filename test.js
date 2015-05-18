@@ -2,6 +2,7 @@ var InMemoryGuard = require('./guard').InMemoryGuard
   , when = require('when')
   , should = require('should')
   , graph = require('./fb_graph')
+  , config = require('./config')
 
 describe('InMemoryGuard', function(){
 
@@ -21,7 +22,7 @@ describe('InMemoryGuard', function(){
     .delay(300)
     .then(guard.call.bind(guard))
     .then(function(result){
-      guard.calls.size().should.be.equal(4)
+      guard.calls.length.should.be.equal(4)
       result.should.be.true;
     }).done(done, done);
 
@@ -36,7 +37,7 @@ describe('InMemoryGuard', function(){
     .delay(400)
     .then(guard.call.bind(guard))
     .then(function(result){
-      guard.calls.size().should.be.equal(3)
+      guard.calls.length.should.be.equal(3)
       result.should.be.false;
     }).done(done, done);
 
@@ -53,7 +54,7 @@ describe('InMemoryGuard', function(){
     .then(guard.call.bind(guard))
     .then(guard.call.bind(guard))
     .then(function(result){
-      guard.calls.size().should.be.equal(3)
+      guard.calls.length.should.be.equal(3)
       result.should.be.false;
     }).done(done, done);
 
@@ -64,7 +65,7 @@ describe('InMemoryGuard', function(){
 describe('FBGraph', function(){
 
   beforeEach(function(){
-    graph.token = 'CAACEdEose0cBAFeeRzeZCNGwFqnnlevm0aTFYRhqZAEHeljTQYZCjJufskvMRWSaaR75xluy8yflOyK94V0KAmZAQjHa4WCxwUSxLH5bI3MAS9unqCgOnZC2FfBPKZC1Sguc6ZAp4iJgxfdwqLZBH2whcO9bNwRZBN2HAml3uBysrV7soxxZCbelxxilmnN6ijS8Cuth0UVW8syZAQbkLJjUZAhMmZBiZBOeLFBf8ZD';
+    graph.token = config.facebook.token;
 
     graph.maxAttempts = 5;
 
