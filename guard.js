@@ -49,28 +49,21 @@ var Guard = Backbone.Model.extend({
   }
 });
 
-var Calls = Backbone.Collection.extend({
-
-});
-
 var InMemoryGuard = Guard.extend({
   initialize: function() {
-    this.calls = new Calls();
+    this.calls = [];
   },
 
   addNewCall: function() {
-    this.calls.add({
-      date: new Date().getTime()
-    });
-
+    this.calls.push(new Date().getTime());
     return when(this);
   },
 
   countCallsWithin: function(ms) {
     var now = new Date().getTime();
 
-    var calls = this.calls.filter(function(call){
-      return now - call.get('date') < ms;
+    var calls = _.filter(this.calls, function(call){
+      return now - call < ms;
     });
 
     return when(calls.length);
@@ -79,11 +72,11 @@ var InMemoryGuard = Guard.extend({
   removeCallsWithin: function(ms) {
     var now = new Date().getTime();
 
-    var calls = this.calls.filter(function(call){
-      return  call.get('date') < now - ms;
+    this.calls = _.reject(this.calls, function(call){
+      return  call < now - ms;
     });
 
-    return when(this.calls.remove(calls));
+    return when(this.calls);
   }
 });
 
